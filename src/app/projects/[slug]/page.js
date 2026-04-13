@@ -6,6 +6,7 @@ import { adaProjects, promotions, studentProjects } from "@/db/schema";
 import ProjectImage from "@/components/project-image";
 import { getProjectImageSources } from "@/lib/project-images";
 import EditDialog from "@/components/EditDialog";
+import PublishButton from "@/components/PublishButton";
 
 function formatDate(date) {
   if (!date) return null;
@@ -105,6 +106,7 @@ export default async function ProjectPage({ params }) {
             Voir le code
           </a>
           <EditDialog project={project} />
+          {!project.publishedAt && <PublishButton projectId={project.id} />}
         </div>
       </article>
     </main>
