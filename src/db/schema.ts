@@ -7,29 +7,29 @@ import {
 } from "drizzle-orm/pg-core";
 
 export const adaProjectsTable = pgTable("ada_projects", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  name: varchar({ length: 255 }).notNull().unique(),
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  name: varchar("name", { length: 255 }).notNull().unique(),
 });
 
 export const promotionsTable = pgTable("promotions", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  name: varchar({ length: 255 }).notNull().unique(),
-  startDate: date().notNull(),
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  name: varchar("name", { length: 255 }).notNull().unique(),
+  startDate: date("start_date").notNull(),
 });
 
 export const studentProjectsTable = pgTable("student_projects", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  title: varchar({ length: 255 }).notNull(),
-  slug: varchar({ length: 255 }).notNull().unique(),
-  githubUrl: varchar({ length: 255 }).notNull(),
-  demoUrl: varchar({ length: 255 }).notNull(),
-  imageUrl: varchar({ length: 255 }),
-  createdAt: timestamp().defaultNow().notNull(),
-  publishedAt: timestamp(),
-  promotionId: integer()
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  title: varchar("title", { length: 255 }).notNull(),
+  slug: varchar("slug", { length: 255 }).notNull().unique(),
+  githubUrl: varchar("github_url", { length: 255 }).notNull(),
+  demoUrl: varchar("demo_url", { length: 255 }).notNull(),
+  imageUrl: varchar("image_url", { length: 255 }),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  publishedAt: timestamp("published_at"),
+  promotionId: integer("promotion_id")
     .notNull()
     .references(() => promotionsTable.id),
-  adaProjectId: integer()
+  adaProjectId: integer("ada_project_id")
     .notNull()
     .references(() => adaProjectsTable.id),
 });

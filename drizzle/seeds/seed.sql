@@ -10,7 +10,8 @@
 
 INSERT INTO promotions (name, start_date) VALUES
   ('Frida', '2023-09-01'),
-  ('Grace', '2024-02-01');
+  ('Grace', '2024-02-01')
+ON CONFLICT (name) DO NOTHING;
 
 
 -- ------------------------------------------------------------
@@ -30,7 +31,8 @@ INSERT INTO ada_projects (name) VALUES
   ('Adaskill'),
   ('Adatabase'),
   ('AdaPatisserie'),
-  ('Projet fil rouge');
+  ('Projet fil rouge')
+ON CONFLICT (name) DO NOTHING;
 
 
 -- ------------------------------------------------------------
