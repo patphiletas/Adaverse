@@ -7,7 +7,13 @@ import { getProjectImageSources } from "@/lib/project-images";
 
 export const dynamic = "force-dynamic";
 
-async function getPublishedProjects() {
+type Row = {
+  student_projects: typeof studentProjectsTable.$inferSelect;
+  promotions: typeof promotionsTable.$inferSelect;
+  ada_projects: typeof adaProjectsTable.$inferSelect;
+};
+
+async function getPublishedProjects(): Promise<Row[]> {
   return db
     .select()
     .from(studentProjectsTable)
@@ -17,16 +23,16 @@ async function getPublishedProjects() {
     .orderBy(desc(studentProjectsTable.publishedAt));
 }
 
-function groupBy(rows, keyFn) {
+function groupBy(rows: Row[], keyFn: (row: Row) => string): Record<string, Row[]> {
   return rows.reduce((acc, row) => {
     const key = keyFn(row);
     if (!acc[key]) acc[key] = [];
     acc[key].push(row);
     return acc;
-  }, {});
+  }, {} as Record<string, Row[]>);
 }
 
-function ProjectCard({ row }) {
+function ProjectCard({ row }: { row: Row }) {
   const project = row.student_projects;
   const promo = row.promotions;
   const imageSources = getProjectImageSources(project.githubUrl, project.imageUrl);
@@ -53,7 +59,7 @@ function ProjectCard({ row }) {
         )}
         <p className="text-zinc-400 dark:text-zinc-400 text-xs mt-1">
           Publié le{" "}
-          {new Date(project.publishedAt).toLocaleDateString("fr-FR", {
+          {new Date(project.publishedAt!).toLocaleDateString("fr-FR", {
             day: "numeric",
             month: "long",
             year: "numeric",
@@ -64,11 +70,11 @@ function ProjectCard({ row }) {
   );
 }
 
-export default async function Home({ searchParams }) {
+export default async function Home({ searchParams }: { searchParams: Promise<{ tri?: string }> }) {
   const { tri = "projet" } = await searchParams;
   const rows = await getPublishedProjects();
 
-  let grouped;
+  let grouped: Record<string, Row[]>;
   if (tri === "promo") {
     grouped = groupBy(rows, (row) => row.promotions.name);
   } else if (tri === "contributeur") {

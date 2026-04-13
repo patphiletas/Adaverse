@@ -3,6 +3,17 @@
 import { useState } from "react";
 import Image from "next/image";
 
+type Props = {
+  sources: string[];
+  alt: string;
+  className?: string;
+  fill?: boolean;
+  height?: number;
+  priority?: boolean;
+  sizes?: string;
+  width?: number;
+};
+
 export default function ProjectImage({
   alt,
   className,
@@ -12,7 +23,7 @@ export default function ProjectImage({
   sizes,
   sources,
   width,
-}) {
+}: Props) {
   const imageSources = sources?.length ? sources : ["/default-project.svg"];
   const [currentIndex, setCurrentIndex] = useState(0);
   const src = imageSources[currentIndex];
@@ -25,10 +36,7 @@ export default function ProjectImage({
       height={height}
       onError={() => {
         setCurrentIndex((index) => {
-          if (index >= imageSources.length - 1) {
-            return index;
-          }
-
+          if (index >= imageSources.length - 1) return index;
           return index + 1;
         });
       }}

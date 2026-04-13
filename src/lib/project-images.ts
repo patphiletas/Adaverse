@@ -1,6 +1,6 @@
 const GITHUB_REPOSITORY_PATTERN = /^https:\/\/github\.com\/([^/]+)\/([^/?#]+)\/?$/i;
 
-export function getProjectImageSources(githubUrl, customImageUrl) {
+export function getProjectImageSources(githubUrl: string | null | undefined, customImageUrl: string | null | undefined): string[] {
   if (customImageUrl) {
     return [customImageUrl, "/default-project.svg"];
   }

@@ -3,7 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function DeleteButton({ projectId }) {
+type Props = {
+  projectId: number;
+};
+
+export default function DeleteButton({ projectId }: Props) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [password, setPassword] = useState("");

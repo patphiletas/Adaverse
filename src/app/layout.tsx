@@ -1,15 +1,16 @@
 import "./globals.css";
 import { Suspense } from "react";
+import type { Metadata } from "next";
 import ProposalDialog from "@/components/ProposalDialog";
 import NavFilters from "@/components/NavFilters";
 import ThemeToggle from "@/components/ThemeToggle";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Adaverse",
   description: "Les projets des apprenants d'Ada",
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="h-full antialiased">
       <head>

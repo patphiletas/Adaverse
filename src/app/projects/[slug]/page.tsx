@@ -9,7 +9,7 @@ import EditDialog from "@/components/EditDialog";
 import PublishButton from "@/components/PublishButton";
 import DeleteButton from "@/components/DeleteButton";
 
-function formatDate(date) {
+function formatDate(date: Date | null): string | null {
   if (!date) return null;
   return new Intl.DateTimeFormat("fr-FR", {
     day: "2-digit",
@@ -18,7 +18,7 @@ function formatDate(date) {
   }).format(date);
 }
 
-export default async function ProjectPage({ params }) {
+export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
 
   const result = await db
@@ -87,7 +87,7 @@ export default async function ProjectPage({ params }) {
         <div className="flex flex-col gap-3 sm:flex-row">
           {hasDemoUrl && (
             <a
-              href={project.demoUrl}
+              href={project.demoUrl!}
               target="_blank"
               rel="noreferrer"
               className="rounded-lg bg-zinc-950 dark:bg-zinc-100 px-5 py-3 text-center font-semibold text-white dark:text-zinc-900 transition hover:bg-zinc-700 dark:hover:bg-zinc-300"

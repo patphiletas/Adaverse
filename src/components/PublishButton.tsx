@@ -2,7 +2,11 @@
 
 import { useRouter } from "next/navigation";
 
-export default function PublishButton({ projectId }) {
+type Props = {
+  projectId: number;
+};
+
+export default function PublishButton({ projectId }: Props) {
   const router = useRouter();
 
   async function handlePublish() {
