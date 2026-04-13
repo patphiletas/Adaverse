@@ -1,4 +1,4 @@
 UPDATE student_projects
-SET published_at = NOW()
+SET "publishedAt" = NOW()
 WHERE id = 1
-  AND published_at IS NULL;
+  AND "publishedAt" IS NULL;

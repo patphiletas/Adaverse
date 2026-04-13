@@ -28,6 +28,7 @@ export default function ProjectForm({ initialValues, onSubmit, submitLabel }: Pr
   const [promotions, setPromotions] = useState<Promotion[]>([]);
   const [adaProjects, setAdaProjects] = useState<AdaProject[]>([]);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetch("/api/promotions").then((r) => r.json()).then(setPromotions);
@@ -55,8 +56,10 @@ export default function ProjectForm({ initialValues, onSubmit, submitLabel }: Pr
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError("");
+    setLoading(true);
     const errorMsg = await onSubmit(form);
     if (errorMsg) setError(errorMsg);
+    setLoading(false);
   }
 
   return (
@@ -94,8 +97,8 @@ export default function ProjectForm({ initialValues, onSubmit, submitLabel }: Pr
         <input name="contributors" value={form.contributors} onChange={handleChange} className={inputClass} placeholder="alice-ada, bob-dev" />
       </div>
       {error && <p className="text-red-500 text-sm">{error}</p>}
-      <button type="submit" className="bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-lg py-2 text-sm font-medium hover:bg-zinc-700 dark:hover:bg-zinc-300 transition-colors">
-        {submitLabel}
+      <button type="submit" disabled={loading} className="bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-lg py-2 text-sm font-medium hover:bg-zinc-700 dark:hover:bg-zinc-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+        {loading ? "En cours…" : submitLabel}
       </button>
     </form>
   );

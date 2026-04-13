@@ -12,9 +12,11 @@ export default function DeleteButton({ projectId }: Props) {
   const [open, setOpen] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function handleDelete() {
     setError("");
+    setLoading(true);
     const res = await fetch(`/api/projects/${projectId}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
@@ -24,6 +26,7 @@ export default function DeleteButton({ projectId }: Props) {
     if (!res.ok) {
       const data = await res.json();
       setError(data.error || "Une erreur est survenue.");
+      setLoading(false);
       return;
     }
 
@@ -64,9 +67,10 @@ export default function DeleteButton({ projectId }: Props) {
               </button>
               <button
                 onClick={handleDelete}
-                className="flex-1 rounded-lg bg-red-600 py-2 text-sm font-semibold text-white hover:bg-red-700 transition"
+                disabled={loading}
+                className="flex-1 rounded-lg bg-red-600 py-2 text-sm font-semibold text-white hover:bg-red-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Confirmer
+                {loading ? "Suppression…" : "Confirmer"}
               </button>
             </div>
           </div>
