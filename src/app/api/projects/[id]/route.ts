@@ -27,3 +27,16 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
   return NextResponse.json(updated[0]);
 }
+
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const { password } = await request.json();
+
+  if (password !== process.env.DELETE_PASSWORD) {
+    return NextResponse.json({ error: "Mot de passe incorrect" }, { status: 403 });
+  }
+
+  await db.delete(studentProjects).where(eq(studentProjects.id, Number(id)));
+
+  return NextResponse.json({ success: true });
+}

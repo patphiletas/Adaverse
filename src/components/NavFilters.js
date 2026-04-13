@@ -21,8 +21,8 @@ export default function NavFilters() {
           href={`/?tri=${f.value}`}
           className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
             tri === f.value
-              ? "bg-zinc-900 text-white"
-              : "text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100"
+              ? "bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900"
+              : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800"
           }`}
         >
           {f.label}
