@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { and, eq, isNotNull } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { adaProjects, promotions, studentProjects } from "@/db/schema";
 import ProjectImage from "@/components/project-image";
 import { getProjectImageSources } from "@/lib/project-images";
+import EditDialog from "@/components/EditDialog";
 
 function formatDate(date) {
   if (!date) return null;
@@ -27,19 +28,17 @@ export default async function ProjectPage({ params }) {
       githubUrl: studentProjects.githubUrl,
       demoUrl: studentProjects.demoUrl,
       imageUrl: studentProjects.imageUrl,
+      contributors: studentProjects.contributors,
       publishedAt: studentProjects.publishedAt,
+      promotionId: studentProjects.promotionId,
+      adaProjectId: studentProjects.adaProjectId,
       promotionName: promotions.name,
       adaProjectName: adaProjects.name,
     })
     .from(studentProjects)
     .innerJoin(promotions, eq(studentProjects.promotionId, promotions.id))
     .innerJoin(adaProjects, eq(studentProjects.adaProjectId, adaProjects.id))
-    .where(
-      and(
-        eq(studentProjects.slug, slug),
-        isNotNull(studentProjects.publishedAt)
-      )
-    )
+    .where(eq(studentProjects.slug, slug))
     .limit(1);
 
   const project = result[0];
@@ -67,6 +66,11 @@ export default async function ProjectPage({ params }) {
                 ? ` - publie le ${formatDate(project.publishedAt)}`
                 : ""}
             </p>
+            {project.contributors && (
+              <p className="text-sm text-zinc-500">
+                <span className="font-medium">Contributeurs :</span> {project.contributors}
+              </p>
+            )}
           </div>
 
           <div className="relative aspect-[1.8/1] w-full overflow-hidden rounded-lg bg-zinc-100 shadow-[10px_12px_24px_rgba(24,24,27,0.16)] sm:w-80 sm:flex-none">
@@ -100,6 +104,7 @@ export default async function ProjectPage({ params }) {
           >
             Voir le code
           </a>
+          <EditDialog project={project} />
         </div>
       </article>
     </main>

@@ -17,7 +17,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const { title, githubUrl, demoUrl, promotionId, adaProjectId } = body;
+  const { title, githubUrl, demoUrl, promotionId, adaProjectId, contributors } = body;
 
   if (!title || !githubUrl || !demoUrl) {
     return NextResponse.json(
@@ -40,6 +40,7 @@ export async function POST(request: Request) {
       demoUrl,
       promotionId,
       adaProjectId,
+      contributors: contributors || null,
     })
     .returning();
 
